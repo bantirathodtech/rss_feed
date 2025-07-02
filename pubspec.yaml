@@ -1,0 +1,26 @@
+name: rss_feed
+description: A comprehensive Flutter package for displaying and interacting with RSS feeds, including a WebView for full article viewing.
+version: 0.1.0 # Initial version
+homepage: https://github.com/bantirathodtech/rss_feed # Your GitHub repo
+repository: https://github.com/bantirathodtech/rss_feed # Your GitHub repo
+issue_tracker: https://github.com/bantirathodtech/rss_feed/issues # Your GitHub issues
+# You can add authors/publishers info here if desired, but pub.dev also uses your authenticated email.
+# authors:
+#   - Banti Rathod <bantirathodtech@gmail.com>
+
+environment:
+  sdk: '>=3.0.0 <4.0.0' # Adjust if your minimum Dart SDK version differs
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.4.0
+  intl: ^0.20.2
+  rss_dart: ^1.0.13
+  webview_flutter: ^4.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0 # Recommended for linting rules
