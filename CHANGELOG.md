@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2025-07-02
+### Changed
+* Updated `flutter_lints` to `^6.0.0` and resolved associated static analysis warnings.
+* Removed unnecessary null checks in `FeedDetailScreen` for `feed.items`.
+* Removed the `library` declaration from `rss_feed.dart` as it's no longer necessary.
+
 ## [0.1.0] - 2025-07-02
 
 ### Added

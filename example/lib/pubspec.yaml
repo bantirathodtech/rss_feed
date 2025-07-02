@@ -11,9 +11,9 @@ dependencies:
     sdk: flutter
   # The package you are demonstrating
   rss_feed:
-    path: ../ # This links to your local package
+    path: ../.. # Corrected path from '../' to '..'
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^3.0.0 # Note: This is the example's lint version, not the main package's.

@@ -49,7 +49,12 @@ class _FeedDetailScreenState extends State<FeedDetailScreen> {
           } else if (snapshot.hasData) {
             final feed = snapshot.data!;
             // Check if the feed contains any articles
-            if (feed.items == null || feed.items!.isEmpty) {
+            // The linter warning indicates feed.items is not null here.
+            // So, a direct check for .isEmpty is sufficient if it's always a list.
+            // If it could be null, the ?.isEmpty ?? true pattern is safer.
+            // Given the original lint, assuming it's guaranteed non-null list if hasData.
+            if (feed.items.isEmpty) {
+              // Corrected line from `feed.items == null || feed.items!.isEmpty`
               return const Center(
                   child: Text('No articles found in this feed.'));
             }
