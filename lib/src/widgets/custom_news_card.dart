@@ -2,13 +2,39 @@ import 'package:flutter/material.dart';
 
 import '../utils/string_utils.dart'; // Relative import for utilities
 
+/// A customizable card widget designed to display news article summaries.
+///
+/// It presents an article with a title, a truncated description,
+/// publication date, and an optional image. Tapping the card triggers the [onTap] callback,
+/// typically used for navigation to the full article.
 class CustomNewsCard extends StatelessWidget {
+  /// The title of the news article. This will be displayed prominently.
   final String title;
+
+  /// The full description or summary of the article.
+  /// This text will be cleaned of HTML tags and potentially truncated for display
+  /// within the card to fit the layout.
   final String description;
+
+  /// The publication date of the article.
+  /// This date string will be formatted for better readability using [StringUtils.formatDate].
   final String date;
+
+  /// An optional URL for the article's main image.
+  /// If provided and valid, the image will be displayed at the top of the card.
+  /// If null or fails to load, a placeholder will be shown.
   final String? imageUrl;
+
+  /// The callback function that is executed when the card is tapped.
+  ///
+  /// This is typically used to navigate to a detailed view of the article
+  /// or to open the article in a web view.
   final VoidCallback onTap;
 
+  /// Creates a [CustomNewsCard].
+  ///
+  /// Requires a [title], [description], [date], and an [onTap] callback.
+  /// [imageUrl] is optional.
   const CustomNewsCard({
     super.key,
     required this.title,

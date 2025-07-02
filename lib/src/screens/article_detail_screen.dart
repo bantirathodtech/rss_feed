@@ -1,14 +1,38 @@
+import 'dart:io'
+    show
+        Platform; // Import Platform for desktop checks (conditional import needed if this causes issues on web)
+
+import 'package:flutter/foundation.dart' show kIsWeb; // Import kIsWeb
 import 'package:flutter/material.dart';
 
-import '../utils/string_utils.dart'; // Relative import for utilities
-import 'web_view_screen.dart'; // Relative import for WebViewScreen
+import '../utils/string_utils.dart';
+import '../utils/url_utils.dart'; // <<<--- for UrlUtils.launchExternalUrl
+import 'web_view_screen.dart';
 
+/// A screen that displays the detailed content of an RSS article.
+///
+/// It shows the article's title, cleaned content, and optionally an image.
+/// Provides a button to open the full article in an in-app [WebViewScreen].
 class ArticleDetailScreen extends StatelessWidget {
+  /// The title of the article.
   final String title;
+
+  /// The main content/description of the article, typically in HTML format.
+  /// This content is cleaned of HTML tags before display.
   final String content;
+
+  /// The original URL to the full article on the web.
+  /// This URL is used to open the article in the [WebViewScreen].
   final String url;
+
+  /// An optional URL for the article's main image.
+  /// If provided, this image will be displayed at the top of the article.
   final String? imageUrl;
 
+  /// Creates an [ArticleDetailScreen].
+  ///
+  /// Requires [title], [content], and [url].
+  /// The [imageUrl] is optional and can be `null` if no image is available.
   const ArticleDetailScreen({
     super.key,
     required this.title,
@@ -62,13 +86,21 @@ class ArticleDetailScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          WebViewScreen(url: url, title: title),
-                    ),
-                  );
+                  // Conditionally launch based on platform
+                  if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+                    // On web, Windows, and Linux, open the URL in the system's default browser
+                    // using UrlUtils (which uses url_launcher).
+                    UrlUtils.launchExternalUrl(url);
+                  } else {
+                    // On Android, iOS, and macOS, use the in-app WebViewScreen.
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            WebViewScreen(url: url, title: title),
+                      ),
+                    );
+                  }
                 },
                 child: const Text('Read Full Article'),
               ),
