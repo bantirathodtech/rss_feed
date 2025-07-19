@@ -1,40 +1,31 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/string_utils.dart'; // Relative import for utilities
+import '../utils/string_utils.dart';
 
-/// A customizable card widget designed to display news article summaries.
+/// A customizable card widget for displaying RSS article summaries.
 ///
-/// It presents an article with a title, a truncated description,
-/// publication date, and an optional image. Tapping the card triggers the [onTap] callback,
-/// typically used for navigation to the full article.
+/// Displays a title, description, date, and optional image. Tapping the card
+/// triggers the [onTap] callback for navigation to the article's details.
 class CustomNewsCard extends StatelessWidget {
-  /// The title of the news article. This will be displayed prominently.
+  /// The title of the article.
   final String title;
 
-  /// The full description or summary of the article.
-  /// This text will be cleaned of HTML tags and potentially truncated for display
-  /// within the card to fit the layout.
+  /// The description or summary of the article.
   final String description;
 
   /// The publication date of the article.
-  /// This date string will be formatted for better readability using [StringUtils.formatDate].
   final String date;
 
-  /// An optional URL for the article's main image.
-  /// If provided and valid, the image will be displayed at the top of the card.
-  /// If null or fails to load, a placeholder will be shown.
+  /// Optional URL for the article's image.
   final String? imageUrl;
 
-  /// The callback function that is executed when the card is tapped.
-  ///
-  /// This is typically used to navigate to a detailed view of the article
-  /// or to open the article in a web view.
+  /// Callback triggered when the card is tapped.
   final VoidCallback onTap;
 
-  /// Creates a [CustomNewsCard].
-  ///
-  /// Requires a [title], [description], [date], and an [onTap] callback.
-  /// [imageUrl] is optional.
+  /// Optional custom placeholder widget for failed image loads.
+  final Widget? placeholderImage;
+
   const CustomNewsCard({
     super.key,
     required this.title,
@@ -42,38 +33,44 @@ class CustomNewsCard extends StatelessWidget {
     required this.date,
     this.imageUrl,
     required this.onTap,
+    this.placeholderImage,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8.0),
-      elevation: 2.0, // Added a little elevation for better visual
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0)), // Rounded corners
+      elevation: 2.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       child: InkWell(
         onTap: onTap,
-        borderRadius:
-            BorderRadius.circular(8.0), // Match InkWell's ripple to card shape
+        borderRadius: BorderRadius.circular(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (imageUrl != null)
               ClipRRect(
-                // Clip the image to match card's rounded corners
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(8.0)),
-                child: Image.network(
-                  imageUrl!,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl!,
                   width: double.infinity,
                   height: 150,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  placeholder: (context, url) => Container(
                     height: 150,
                     color: Colors.grey[200],
-                    child: const Center(
-                        child: Icon(Icons.broken_image, color: Colors.grey)),
+                    child: const Center(child: CircularProgressIndicator()),
                   ),
+                  errorWidget: (context, url, error) =>
+                      placeholderImage ??
+                      Container(
+                        height: 150,
+                        color: Colors.grey[200],
+                        child: const Center(
+                            child:
+                                Icon(Icons.broken_image, color: Colors.grey)),
+                      ),
                 ),
               ),
             Padding(
@@ -91,7 +88,7 @@ class CustomNewsCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    StringUtils.formatDate(date), // Using utility function
+                    StringUtils.formatDate(date),
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
@@ -99,8 +96,7 @@ class CustomNewsCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    StringUtils.removeHtmlTags(
-                        description), // Using utility function
+                    StringUtils.removeHtmlTags(description),
                     style: Theme.of(context).textTheme.bodyMedium,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,

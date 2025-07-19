@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:rss_dart/domain/rss_feed.dart'; // Corrected import for RssFeed from rss_dart
 
-import '../../rss_feed.dart'; // Corrected relative import for FeedParser, UrlUtils, CustomNewsCard, ArticleDetailScreen
+import '../models/rss_feed.dart';
+import '../utils/config.dart';
+import '../utils/feed_parser.dart';
+import '../utils/url_utils.dart';
+import '../widgets/custom_news_card.dart';
+import 'article_detail_screen.dart';
 
 /// A screen that displays a list of articles from a single RSS feed.
 ///
-/// It takes a [feedUrl] and displays articles fetched from that URL in a scrollable list.
-/// Each article is presented as a [CustomNewsCard] which, when tapped, navigates
-/// to the [ArticleDetailScreen] or opens the full article in a [WebViewScreen].
+/// Fetches articles from the provided [feedUrl] and displays them as [CustomNewsCard]s.
+/// Supports customization via [RSSConfig].
 class FeedDetailScreen extends StatefulWidget {
   /// The URL of the RSS feed to display.
   final String feedUrl;
 
-  /// Creates a [FeedDetailScreen].
-  ///
-  /// Requires the [feedUrl] to fetch and display articles from.
-  const FeedDetailScreen({super.key, required this.feedUrl});
+  /// Configuration for customizing the feed UI and behavior.
+  final RSSConfig config;
+
+  const FeedDetailScreen({
+    super.key,
+    required this.feedUrl,
+    this.config = const RSSConfig(),
+  });
 
   @override
   State<FeedDetailScreen> createState() => _FeedDetailScreenState();
@@ -27,78 +34,77 @@ class _FeedDetailScreenState extends State<FeedDetailScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize the future to fetch the RSS feed
     futureFeed = FeedParser.fetchFeed(widget.feedUrl);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Display the feed name using a utility function
-        title: Text(UrlUtils.getFeedName(widget.feedUrl)),
-        centerTitle: true, // Center the title for better UI
-      ),
-      body: FutureBuilder<RssFeed>(
-        future: futureFeed,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final feed = snapshot.data!;
-            // Check if the feed contains any articles
-            // The linter warning indicates feed.items is not null here.
-            // So, a direct check for .isEmpty is sufficient if it's always a list.
-            // If it could be null, the ?.isEmpty ?? true pattern is safer.
-            // Given the original lint, assuming it's guaranteed non-null list if hasData.
-            if (feed.items.isEmpty) {
-              // Corrected line from `feed.items == null || feed.items!.isEmpty`
-              return const Center(
-                  child: Text('No articles found in this feed.'));
-            }
-            return ListView.builder(
-              itemCount: feed.items.length,
-              itemBuilder: (context, index) {
-                final item = feed.items[index];
-                return CustomNewsCard(
-                  title: item.title ?? 'No title',
-                  description: item.description ?? 'No description',
-                  date: item.pubDate ?? 'No date',
-                  // Extract image URL using a utility function
-                  imageUrl: FeedParser.getImageUrl(item),
-                  onTap: () {
-                    // Navigate to article detail if a link is available
-                    if (item.link != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ArticleDetailScreen(
-                            title: item.title ?? 'No title',
-                            content: item.description ?? 'No content',
-                            url: item.link!,
-                            imageUrl: FeedParser.getImageUrl(item),
+    final theme = widget.config.theme ?? Theme.of(context);
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(UrlUtils.getFeedName(widget.feedUrl)),
+          centerTitle: true,
+        ),
+        body: FutureBuilder<RssFeed>(
+          future: futureFeed,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              final feed = snapshot.data!;
+              if (feed.items.isEmpty) {
+                return const Center(
+                    child: Text('No articles found in this feed.'));
+              }
+              return ListView.builder(
+                itemCount: feed.items.length,
+                itemBuilder: (context, index) {
+                  final item = feed.items[index];
+                  return CustomNewsCard(
+                    title: item.title ?? 'No title',
+                    description: item.description ?? 'No description',
+                    date: item.pubDate ?? 'No date',
+                    imageUrl: FeedParser.getImageUrl(
+                      item,
+                      fallbackImageUrl: widget.config.defaultImageUrl,
+                    ),
+                    placeholderImage:
+                        const Icon(Icons.article, size: 50, color: Colors.grey),
+                    onTap: () {
+                      if (item.link != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArticleDetailScreen(
+                              title: item.title ?? 'No title',
+                              content: item.description ?? 'No content',
+                              url: item.link!,
+                              imageUrl: FeedParser.getImageUrl(
+                                item,
+                                fallbackImageUrl: widget.config.defaultImageUrl,
+                              ),
+                            ),
                           ),
-                        ),
-                      );
-                    } else {
-                      // Show a message if no link is found
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text('No link available for this article.')),
-                      );
-                    }
-                  },
-                );
-              },
-            );
-          }
-          return const Center(
-              child: Text(
-                  'Unexpected state.')); // Fallback for unexpected FutureBuilder state
-        },
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content:
+                                  Text('No link available for this article.')),
+                        );
+                      }
+                    },
+                  );
+                },
+              );
+            }
+            return const Center(child: Text('Unexpected state.'));
+          },
+        ),
       ),
     );
   }

@@ -1,17 +1,14 @@
-// lib/src/utils/url_utils.dart
+import 'package:flutter/foundation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'package:flutter/foundation.dart'; // For debugPrint, if used
-import 'package:url_launcher/url_launcher.dart'; // This is crucial for launchExternalUrl
-
-/// A utility class for handling URL-related operations,
-/// such as launching external web pages and deriving feed names.
+/// A utility class for handling URL-related operations, such as launching URLs
+/// and deriving feed names from URLs.
 class UrlUtils {
-  /// Determines a human-readable name for an RSS feed based on its [url].
+  /// Returns a human-readable name for an RSS feed based on its [url].
   ///
-  /// It checks the [url] against a predefined list of patterns and returns
-  /// a corresponding common name. If no match is found, it defaults to "RSS Feed".
+  /// Matches the URL against known patterns to provide a friendly name.
+  /// Returns 'RSS Feed' if no match is found.
   static String getFeedName(String url) {
-    // Corrected: Each 'if' statement now has a block {}
     if (url.contains('bbc.com/news/world/rss.xml')) {
       return 'BBC World News';
     }
@@ -36,30 +33,20 @@ class UrlUtils {
     if (url.contains('marathi.tv9marathi.com')) {
       return 'TV9 Marathi';
     }
-    return 'RSS Feed'; // Default name if no specific match
+    if (url.contains('thehindu.com')) {
+      return 'The Hindu';
+    }
+    return 'RSS Feed';
   }
 
-  /// Launches a URL in the default external web browser of the device.
+  /// Launches a [url] in the device's default external browser.
   ///
-  /// Returns `true` if the URL was successfully launched, `false` otherwise.
-  /// This method handles parsing the URL string into a [Uri] and checking
-  /// if the URL can be launched before attempting to do so.
-  ///
-  /// Example:
-  /// ```dart
-  /// bool launched = await UrlUtils.launchExternalUrl('[https://pub.dev](https://pub.dev)');
-  /// if (launched) {
-  ///   debugPrint('URL launched successfully!');
-  /// } else {
-  ///   debugPrint('Failed to launch URL.');
-  /// }
-  /// ```
+  /// Returns `true` if the URL was launched successfully, `false` otherwise.
   static Future<bool> launchExternalUrl(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       return await launchUrl(uri);
     } else {
-      // Log an error if the URL cannot be launched for debugging
       debugPrint('Could not launch $url');
       return false;
     }

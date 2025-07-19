@@ -1,40 +1,34 @@
-import 'package:intl/intl.dart'; // Required for date formatting
+import 'package:intl/intl.dart';
 
-/// A utility class containing helper methods for common string manipulation tasks.
-///
-/// This includes methods for date formatting and cleaning HTML content from text.
+/// A utility class for common string manipulation tasks, such as date formatting
+/// and cleaning HTML content.
 class StringUtils {
-  /// Formats a given date string into a readable format: "MMM d, y • h:mm a".
+  /// Formats a date string into a readable format: "MMM d, y • h:mm a".
   ///
-  /// Example: "Jul 2, 2025 • 8:23 PM"
-  /// If the [dateString] cannot be parsed, the original string is returned.
+  /// Example: "Jul 19, 2025 • 6:46 PM".
+  /// Returns the original [dateString] if parsing fails.
   static String formatDate(String dateString) {
     try {
       final dateTime = DateTime.parse(dateString);
       return DateFormat('MMM d, y • h:mm a').format(dateTime);
     } catch (e) {
-      // Return original string if parsing fails (e.g., invalid date format)
       return dateString;
     }
   }
 
-  /// Removes all HTML tags from the given [text].
+  /// Removes HTML tags from the given [text] and normalizes whitespace.
   ///
-  /// It also replaces multiple whitespaces with a single space and trims
-  /// leading/trailing whitespace. This is useful for converting HTML content
-  /// to plain text for display.
+  /// Replaces multiple whitespaces with a single space and trims the result.
   static String removeHtmlTags(String text) {
-    // This regex matches any HTML tag (e.g., <div>, <p>, <img>)
     return text
         .replaceAll(RegExp(r'<[^>]*>'), '')
-        .replaceAll(RegExp(r'\s+'),
-            ' ') // Replace multiple whitespaces with single space
-        .trim(); // Trim leading/trailing whitespace
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
   }
 
-  /// Cleans HTML content by removing all HTML tags.
+  /// Cleans HTML content by removing tags and normalizing whitespace.
   ///
-  /// This is an alias for [removeHtmlTags] for clarity when dealing with content that might contain HTML.
+  /// Alias for [removeHtmlTags] for clarity in context of RSS content.
   static String cleanContent(String content) {
     return removeHtmlTags(content);
   }

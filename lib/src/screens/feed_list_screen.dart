@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../utils/url_utils.dart'; // Relative import for utilities
-import 'feed_detail_screen.dart'; // Relative import for screens
+import '../utils/config.dart';
+import '../utils/url_utils.dart';
+import 'feed_detail_screen.dart';
 
-/// A screen that displays a list of RSS feed URLs.
+/// A screen that displays a list of RSS feed URLs with optional custom names.
 ///
-/// Tapping on a URL in the list navigates the user to the
-/// [FeedDetailScreen] to view the articles from that specific feed.
+/// Tapping a feed navigates to the [FeedDetailScreen] to view its articles.
+/// Supports customization via [RSSConfig].
 class FeedListScreen extends StatefulWidget {
-  /// A list of RSS feed URLs to display.
-  ///
-  /// This parameter is required and should contain valid RSS feed URLs.
+  /// List of RSS feed URLs to display.
   final List<String> feedUrls;
 
-  /// Creates a [FeedListScreen].
-  ///
-  /// Requires a list of [feedUrls] to display.
-  const FeedListScreen({super.key, required this.feedUrls});
+  /// Configuration for customizing the feed UI and behavior.
+  final RSSConfig config;
+
+  const FeedListScreen({
+    super.key,
+    required this.feedUrls,
+    this.config = const RSSConfig(),
+  });
 
   @override
   State<FeedListScreen> createState() => _FeedListScreenState();
@@ -25,47 +28,52 @@ class FeedListScreen extends StatefulWidget {
 class _FeedListScreenState extends State<FeedListScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('RSS Feeds - Suvidha'),
-        centerTitle: true,
-      ),
-      body: widget.feedUrls.isEmpty
-          ? const Center(
-              child: Text(
-                'No RSS feed URLs provided.\nAdd URLs to FeedListScreen.',
-                textAlign: TextAlign.center,
-              ),
-            )
-          : ListView.builder(
-              itemCount: widget.feedUrls.length, // Use the provided feedUrls
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.all(8.0),
-                  elevation: 1.0, // Added a little elevation
-                  child: ListTile(
-                    title: Text(
-                      // Get the display name for the feed URL
-                      UrlUtils.getFeedName(widget.feedUrls[index]),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+    final theme = widget.config.theme ?? Theme.of(context);
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('RSS Feeds'),
+          centerTitle: true,
+        ),
+        body: widget.feedUrls.isEmpty
+            ? const Center(
+                child: Text(
+                  'No RSS feed URLs provided.\nAdd URLs to FeedListScreen.',
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView.builder(
+                itemCount: widget.feedUrls.length,
+                itemBuilder: (context, index) {
+                  final url = widget.feedUrls[index];
+                  final name = widget.config.feedNames?[url] ??
+                      UrlUtils.getFeedName(url);
+                  return Card(
+                    margin: const EdgeInsets.all(8.0),
+                    elevation: 1.0,
+                    child: ListTile(
+                      title: Text(
+                        name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(url),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FeedDetailScreen(
+                              feedUrl: url,
+                              config: widget.config,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    subtitle: Text(
-                        widget.feedUrls[index]), // Show the URL as subtitle
-                    onTap: () {
-                      // Navigate to the detail screen, passing the selected feed URL
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FeedDetailScreen(
-                              feedUrl: widget
-                                  .feedUrls[index]), // Pass the selected URL
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+      ),
     );
   }
 }

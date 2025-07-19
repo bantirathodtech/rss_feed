@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart'; // From webview_flutter package
+import 'package:webview_flutter/webview_flutter.dart';
 
-/// A screen that displays a web page using a WebView.
+/// A screen that displays a web page in an in-app WebView.
 ///
-/// This is typically used to show the full version of an RSS article within the app.
+/// Used to show the full version of an RSS article.
 class WebViewScreen extends StatelessWidget {
-  /// The URL of the web page to load and display.
+  /// The URL of the web page to display.
   final String url;
 
-  /// The title to display in the AppBar of the WebView screen.
+  /// The title to display in the AppBar.
   final String title;
 
-  /// Creates a [WebViewScreen].
-  ///
-  /// Requires the [url] to display and a [title] for the AppBar.
   const WebViewScreen({super.key, required this.url, required this.title});
 
   @override
@@ -23,7 +20,7 @@ class WebViewScreen extends StatelessWidget {
       body: WebViewWidget(
         controller: WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..loadRequest(Uri.parse(url)), // Load the specified URL
+          ..loadRequest(Uri.parse(url)),
       ),
     );
   }
