@@ -122,8 +122,11 @@ class CustomArticleDisplay extends StatelessWidget {
 }
 🖼️ Screenshots
 
-Feed List	Article Detail	WebView
-Failed to load image
+## 🖼️ Screenshots
+
+| Feed List | Feed Detail | Article Detail | Web View |
+|-----------|-------------|----------------|----------|
+| ![Feed List](example/assets/feed_list.jpeg) | ![Feed Detail](example/assets/feed_detail.jpeg) | ![Article Detail](example/assets/article_detail.jpeg) | ![Web View](example/assets/web_view.jpeg) |
 
 View link
 Failed to load image
