@@ -36,30 +36,30 @@ class FeedParser {
     final items = channel.findAllElements('item').map(_parseRssItem).toList();
 
     return RssFeed(
-      title: channel.findElements('title').firstOrNull?.text,
-      description: channel.findElements('description').firstOrNull?.text,
-      link: channel.findElements('link').firstOrNull?.text,
+      title: channel.findElements('title').firstOrNull?.innerText,
+      description: channel.findElements('description').firstOrNull?.innerText,
+      link: channel.findElements('link').firstOrNull?.innerText,
       items: items,
     );
   }
 
-  /// Parses an XML <item> element into an [RssItem].
+  /// Parses an XML `<item>` element into an [RssItem].
   static RssItem _parseRssItem(XmlElement element) {
     final mediaGroup = element.findElements('media:group').firstOrNull;
     final mediaContent = mediaGroup?.findAllElements('media:content') ??
         element.findAllElements('media:content');
 
     return RssItem(
-      title: element.findElements('title').firstOrNull?.text,
-      description: element.findElements('description').firstOrNull?.text,
-      link: element.findElements('link').firstOrNull?.text,
-      pubDate: element.findElements('pubDate').firstOrNull?.text,
+      title: element.findElements('title').firstOrNull?.innerText,
+      description: element.findElements('description').firstOrNull?.innerText,
+      link: element.findElements('link').firstOrNull?.innerText,
+      pubDate: element.findElements('pubDate').firstOrNull?.innerText,
       enclosure: _parseEnclosure(element),
       media: _parseMedia(mediaContent),
     );
   }
 
-  /// Parses an <enclosure> element into an [RssEnclosure].
+  /// Parses an `<enclosure>` element into an [RssEnclosure].
   static RssEnclosure? _parseEnclosure(XmlElement element) {
     final enclosure = element.findElements('enclosure').firstOrNull;
     if (enclosure == null) return null;
@@ -69,7 +69,7 @@ class FeedParser {
     );
   }
 
-  /// Parses <media:content> elements into an [RssMedia].
+  /// Parses `<media:content>` elements into an [RssMedia].
   static RssMedia? _parseMedia(Iterable<XmlElement> mediaElements) {
     if (mediaElements.isEmpty) return null;
     final contents = mediaElements
@@ -83,7 +83,7 @@ class FeedParser {
 
   /// Extracts an image URL from an [RssItem].
   ///
-  /// Checks `media:content`, `enclosure`, and `<img>` tags in `description`.
+  /// Checks `<media:content>`, `<enclosure>`, and `<img>` tags in `description`.
   /// Returns [fallbackImageUrl] if provided and no valid image is found.
   static String? getImageUrl(RssItem item, {String? fallbackImageUrl}) {
     // Check media content

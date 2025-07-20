@@ -29,7 +29,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  rss_feed: ^1.0.0
+  rss_feed: ^1.1.0
 Install it using:
 
 bash/terminal/command prompt

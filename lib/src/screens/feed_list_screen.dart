@@ -35,7 +35,7 @@ class _FeedListScreenState extends State<FeedListScreen>
   @override
   void initState() {
     super.initState();
-// Initialize animation controller for fade-in effect
+    // Initialize animation controller for fade-in effect
     _controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -52,7 +52,7 @@ class _FeedListScreenState extends State<FeedListScreen>
 
   /// Refreshes the feed list (placeholder for future functionality).
   Future<void> _refreshFeeds() async {
-// Simulate a refresh delay
+    // Simulate a refresh delay
     await Future.delayed(const Duration(seconds: 1));
     if (mounted) setState(() {});
   }
@@ -132,7 +132,7 @@ class _FeedListScreenState extends State<FeedListScreen>
           padding: const EdgeInsets.all(12.0),
           child: Row(
             children: [
-// Favicon or placeholder image
+              // Favicon or placeholder image
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: CachedNetworkImage(
@@ -158,7 +158,7 @@ class _FeedListScreenState extends State<FeedListScreen>
                 ),
               ),
               const SizedBox(width: 16.0),
-// Feed name and URL
+              // Feed name and URL
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +208,7 @@ class _FeedListScreenState extends State<FeedListScreen>
           Icon(
             Icons.rss_feed,
             size: 64.0,
-            color: theme.primaryColor.withOpacity(0.6),
+            color: theme.primaryColor.withValues(alpha: 0.6),
             semanticLabel: 'No Feeds Icon',
           ),
           const SizedBox(height: 16.0),

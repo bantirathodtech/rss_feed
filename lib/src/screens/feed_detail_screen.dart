@@ -184,7 +184,6 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
 
   /// Builds a list view for articles.
   Widget _buildListView(BuildContext context, List<RssItem> items) {
-    final theme = widget.config.theme ?? Theme.of(context);
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       itemCount: items.length,
@@ -200,7 +199,6 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
 
   /// Builds a grid view for articles.
   Widget _buildGridView(BuildContext context, List<RssItem> items) {
-    final theme = widget.config.theme ?? Theme.of(context);
     return GridView.builder(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -299,7 +297,7 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      theme.colorScheme.surface.withOpacity(0.85),
+                      theme.colorScheme.surface.withValues(alpha: 0.85),
                     ],
                   ),
                 ),
@@ -323,7 +321,7 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
                         color: imageUrl != null &&
                                 Uri.tryParse(imageUrl)?.hasAuthority == true
                             ? theme.colorScheme.onSurface
-                            : theme.colorScheme.onBackground,
+                            : theme.colorScheme.onSurface,
                       ),
                       maxLines: isGrid ? 2 : 3,
                       overflow: TextOverflow.ellipsis,
@@ -337,7 +335,8 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
                           color: imageUrl != null &&
                                   Uri.tryParse(imageUrl)?.hasAuthority == true
                               ? theme.colorScheme.onSurfaceVariant
-                              : theme.colorScheme.onBackground.withOpacity(0.7),
+                              : theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.7),
                           fontSize: 13.0,
                         ),
                         maxLines: 2,
@@ -350,8 +349,9 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
                         color: imageUrl != null &&
                                 Uri.tryParse(imageUrl)?.hasAuthority == true
                             ? theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.7)
-                            : theme.colorScheme.onBackground.withOpacity(0.7),
+                                .withValues(alpha: 0.7)
+                            : theme.colorScheme.onSurface
+                                .withValues(alpha: 0.7),
                         fontSize: 11.0,
                       ),
                     ),
@@ -367,7 +367,6 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
 
   /// Builds a loading state with shimmer placeholders.
   Widget _buildLoadingState(BuildContext context) {
-    final theme = widget.config.theme ?? Theme.of(context);
     return _isGridView
         ? GridView.builder(
             padding:
@@ -498,7 +497,6 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
 
   /// Builds an empty state with a Lottie animation and call-to-action.
   Widget _buildEmptyState(BuildContext context) {
-    final theme = widget.config.theme ?? Theme.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -511,22 +509,28 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
             errorBuilder: (context, error, stackTrace) => Icon(
               Icons.article,
               size: 64.0,
-              color: theme.primaryColor.withOpacity(0.6),
+              color: (widget.config.theme ?? Theme.of(context))
+                  .primaryColor
+                  .withValues(alpha: 0.6),
               semanticLabel: 'No Articles Icon',
             ),
           ),
           const SizedBox(height: 16.0),
           Text(
             'No articles found',
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: (widget.config.theme ?? Theme.of(context))
+                .textTheme
+                .titleLarge
+                ?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8.0),
           Text(
             'The feed may be empty or your search returned no results.',
-            style: theme.textTheme.bodyMedium,
+            style:
+                (widget.config.theme ?? Theme.of(context)).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16.0),
@@ -535,8 +539,11 @@ class _FeedDetailScreenState extends State<FeedDetailScreen>
             icon: const Icon(Icons.refresh),
             label: const Text('Try Again'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: theme.primaryColor,
-              foregroundColor: theme.colorScheme.onPrimary,
+              backgroundColor:
+                  (widget.config.theme ?? Theme.of(context)).primaryColor,
+              foregroundColor: (widget.config.theme ?? Theme.of(context))
+                  .colorScheme
+                  .onPrimary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),

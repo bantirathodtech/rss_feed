@@ -41,7 +41,7 @@ class ArticleDetailScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-// Sliver app bar with hero image
+          // Sliver app bar with hero image
           SliverAppBar(
             expandedHeight: 280.0,
             floating: false,
@@ -97,7 +97,7 @@ class ArticleDetailScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          theme.colorScheme.surface.withOpacity(0.7),
+                          theme.colorScheme.surface.withValues(alpha: 0.7),
                         ],
                       ),
                     ),
@@ -117,7 +117,7 @@ class ArticleDetailScreen extends StatelessWidget {
               ),
             ],
           ),
-// Article content
+          // Article content
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),

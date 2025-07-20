@@ -2,7 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.1.0] - 2025-07-20
+
+- Added screenshots to README.md for improved documentation.
+- Enhanced UI in FeedListScreen, FeedDetailScreen, and ArticleDetailScreen.
+- Fixed `dart analyze` issues:
+    - Escaped HTML in doc comments in feed_parser.dart.
+    - Replaced deprecated `.text` with `.innerText` in feed_parser.dart.
+    - Removed unused `theme` variables in feed_detail_screen.dart.
+    - Replaced deprecated `withOpacity` with `withValues` in article_detail_screen.dart, feed_detail_screen.dart, feed_list_screen.dart.
+    - Replaced deprecated `onBackground` with `onSurface` in feed_detail_screen.dart.
+    - Fixed relative import in widget_test.dart to use package import.
+- Removed misplaced assets from lib/src/assets/.
+- Fixed asset paths in example/pubspec.yaml.
+
 
 ## [1.0.0] - 2025-07-19
 
