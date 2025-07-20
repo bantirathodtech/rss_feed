@@ -29,7 +29,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  rss_feed: ^1.1.0
+  rss_feed: ^1.1.1
 Install it using:
 
 bash/terminal/command prompt
@@ -125,8 +125,8 @@ class CustomArticleDisplay extends StatelessWidget {
 ## 🖼️ Screenshots
 
 | Feed List | Feed Detail | Article Detail | Web View |
-|-----------|-------------|----------------|----------|
-| ![Feed List](example/assets/feed_list.jpeg) | ![Feed Detail](example/assets/feed_detail.jpeg) | ![Article Detail](example/assets/article_detail.jpeg) | ![Web View](example/assets/web_view.jpeg) |
+|---|---|---|---|
+| ![Feed List](https://raw.githubusercontent.com/bantirathodtech/rss_feed/main/example/assets/feed_list.webp) | ![Feed Detail](https://raw.githubusercontent.com/bantirathodtech/rss_feed/main/example/assets/feed_detail.webp) | ![Article Detail](https://raw.githubusercontent.com/bantirathodtech/rss_feed/main/example/assets/article_detail.webp) | ![Web View](https://raw.githubusercontent.com/bantirathodtech/rss_feed/main/example/assets/web_view.webp) |
 
 View link
 Failed to load image
