@@ -29,6 +29,17 @@ dependencies:
   url_launcher: ^6.3.2 # For launching URLs in external browsers
   xml: ^6.5.0 # For parsing RSS XML data
   cached_network_image: ^3.4.1 # For efficient image loading
+  shimmer: ^3.0.0 # For loading shimmer effects
+  lottie: ^3.1.2 # For Lottie animations
+  share_plus: ^10.0.3 # For sharing content across apps
+
+flutter:
+  uses-material-design: true
+  assets: # Asset files used in the package
+    - assets/feed_list.jpeg
+    - assets/feed_detail.jpeg
+    - assets/article_detail.jpeg
+    - assets/web_view.jpeg
 
 dev_dependencies:
   flutter_test:

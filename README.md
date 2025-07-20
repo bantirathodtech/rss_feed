@@ -1,35 +1,44 @@
-# RSS Feed
+# RSS Feed 📡
 
-A comprehensive Flutter package for displaying and interacting with RSS feeds, featuring customizable UI, robust image handling, and in-app WebView for full articles.
+A powerful and flexible Flutter package for fetching, parsing, and displaying RSS feeds with a customizable UI, robust image handling, and in-app WebView for seamless article reading.
 
-[![Pub Version](https://img.shields.io/pub/v/rss_feed)](https://pub.dev/packages/rss_feed)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[<image-card alt="Pub Version" src="https://img.shields.io/pub/v/rss_feed?color=blue" ></image-card>](https://pub.dev/packages/rss_feed)
+[<image-card alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" ></image-card>](https://opensource.org/licenses/MIT)
+[<image-card alt="GitHub Stars" src="https://img.shields.io/github/stars/bantirathodtech/rss_feed" ></image-card>](https://github.com/bantirathodtech/rss_feed)
 
-## Features
+---
 
-- **Fetch and Parse RSS Feeds**: Seamlessly fetch and parse RSS feeds using the `xml` package.
-- **Configurable Feed List**: Use `FeedListScreen` to display a list of RSS feed URLs, customizable via `RSSConfig`.
-- **Article List View**: Display articles from a selected feed with `FeedDetailScreen`.
-- **Customizable News Card**: `CustomNewsCard` widget for stylish article previews with title, description, date, and image.
-- **Article Detail View**: `ArticleDetailScreen` for detailed article content, with HTML tag removal.
-- **In-App WebView**: Open full articles in `WebViewScreen` (mobile) or external browser (web/desktop).
-- **Robust Image Handling**: Extract images from `media:content`, `enclosure`, or `img` tags, with `cached_network_image` for efficient loading.
-- **Customization**: Use `RSSConfig` to set custom themes, default images, and feed names.
-- **Cross-Platform**: Supports Android, iOS, web, Windows, Linux, and macOS.
-- **Developer-Friendly**: Modular design with utility classes (`FeedParser`, `StringUtils`, `UrlUtils`) and detailed documentation.
+## ✨ Features
 
-## Installation
+- **📥 Fetch & Parse RSS Feeds**: Effortlessly retrieve and parse RSS feeds using the `xml` package.
+- **📋 Configurable Feed List**: Display a list of RSS feeds with `FeedListScreen`, fully customizable via `RSSConfig`.
+- **📰 Article List View**: Showcase articles from a selected feed using `FeedDetailScreen`.
+- **🎨 Customizable News Cards**: Use `CustomNewsCard` for stylish article previews with title, description, date, and images.
+- **📄 Detailed Article View**: Render article content with `ArticleDetailScreen`, featuring HTML tag removal for clean display.
+- **🌐 In-App WebView**: Open full articles in `WebViewScreen` on mobile or external browsers on web/desktop.
+- **🖼️ Robust Image Handling**: Extract images from `media:content`, `enclosure`, or `img` tags, powered by `cached_network_image` for efficient loading.
+- **⚙️ Customization**: Configure themes, default images, and feed names with `RSSConfig`.
+- **🌍 Cross-Platform**: Supports Android, iOS, web, Windows, Linux, and macOS.
+- **🛠️ Developer-Friendly**: Modular design with utilities (`FeedParser`, `StringUtils`, `UrlUtils`) and comprehensive documentation.
 
-Add to your `pubspec.yaml`:
+---
+
+## 🚀 Installation
+
+Add the package to your `pubspec.yaml`:
+
+```yaml
 dependencies:
   rss_feed: ^1.0.0
+Install it using:
 
-Run:
+bash/terminal/command prompt
+
 flutter pub get
-
-Usage
+📖 Usage
 Basic Setup with Configurable URLs
-Display a list of RSS feeds using FeedListScreen with customizable RSSConfig:
+Display a list of RSS feeds using FeedListScreen with a customizable RSSConfig:
+
 import 'package:flutter/material.dart';
 import 'package:rss_feed/rss_feed.dart';
 
@@ -63,6 +72,8 @@ class MyApp extends StatelessWidget {
           feedNames: {
             'https://www.bbc.com/news/world/rss.xml': 'BBC Global',
             'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml': 'NYT Home',
+            'https://feeds.bbci.co.uk/news/technology/rss.xml': 'BBC Tech',
+            'https://www.thehindu.com/feeder/default.rss': 'The Hindu News',
           },
           theme: ThemeData(primarySwatch: Colors.blue),
         ),
@@ -70,9 +81,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 Using Individual Components
-Use CustomNewsCard or other components for custom UI flows:
+Create custom UI flows with CustomNewsCard or other components:
+
 import 'package:flutter/material.dart';
 import 'package:rss_feed/rss_feed.dart';
 
@@ -109,10 +120,28 @@ class CustomArticleDisplay extends StatelessWidget {
     );
   }
 }
+🖼️ Screenshots
 
-Screenshots
+Feed List	Article Detail	WebView
+Failed to load image
 
-Contributing
-Contributions are welcome! Please open an issue or submit a pull request on the GitHub repository.
-License
+View link
+Failed to load image
+
+View link
+Failed to load image
+
+View link
+🛠️ Contributing
+We welcome contributions! To get started:
+
+Fork the repository: github.com/bantirathodtech/rss_feed.
+Create a pull request with your changes.
+Report issues or suggest features via the issue tracker.
+📄 License
 This package is licensed under the MIT License.
+
+📬 Support
+For questions or support, reach out via the GitHub issue tracker or email bantirathodtech@gmail.com.
+
+Built with ❤️ by Banti Rathod.
